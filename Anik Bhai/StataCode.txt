@@ -1,0 +1,102 @@
+clear
+*directory
+cd "E:\ResearchProject\Client Task\Anik Bhai"
+
+use "Death 2023_26Mar", clear
+
+ttest Hospitalstay_deah, by( Sex )
+
+sort age_catagry3
+by age_catagry3: ci means Hospitalstay_deah, total
+anova Hospitalstay_deah age_catagry3
+
+sort CauseofDeath
+by CauseofDeath: ci means Hospitalstay_deah, total
+anova Hospitalstay_deah CauseofDeath
+
+
+
+destring, replace
+tab Sex,m
+replace Sex="M" if Sex=="m"
+replace Sex="F" if Sex=="f"
+tab Sex,m
+tab AgeYear,m
+replace AgeYear=. if AgeYear==0
+tab AgeYear
+replace Sex="1" if Sex=="M"
+replace Sex="2" if Sex=="F"
+proportion Sex
+summarize AgeYear
+Mean AgeYear
+recode AgeYear (min/14.99=1 "<15")(15.00/30.00=2 "15-30")(30.01/60.00=3 "31-60")(60.01/max=4 "61+"), gen(age_catagry)
+tab1 Sex age_catagry Location,m
+ttest age_catagry, by ( Sex )
+ttest age_catagry,by ( Sex )
+ttest Location ,by ( Sex )
+ttest Sex ,by ( Location )
+ttest age_catagry ,by ( Location )
+
+
+//## 25 March 2024
+tab Division,m
+tab Division if Division=="Sylhet"
+br Division if Division=="Sylhet"
+ttest age_catagry,by ( Sex )
+oneway AgeinYear CauseofDeath , tabulate
+ttest AgeinYear, by ( Sex )
+oneway AgeinYear CauseofDeath , tabulate
+oneway AgeinYear age_catagry , tabulate
+oneway AgeinYear CauseofDeath , tabulate
+proportion Sex
+mean Sex
+mean AgeinYear Sex
+oneway Hospitalstay CauseofDeath , tabulate
+tab Hospitalstay_deah,m
+ttest Hospitalstay_deah, by( Sex )
+oneway Hospitalstay_deah CauseofDeath , tabulate
+oneway Hospitalstay_deah age_catagry , tabulate
+oneway Hospitalstay_deah Division , tabulate
+tab Sex
+tab age_catagry,m
+recode AgeinYear (min/15=1 "<15")(15.01/30.00=2 "16-30")(30.01/60.00=3 "31-60")(60.01/max=4 "61+"), gen(age_catagry2)
+tab age_catagry2,m
+recode AgeinYear (min/15=1 "≤15")(15.01/30.00=2 "16-30")(30.01/60.00=3 "31-60")(60.01/max=4 "61+"), gen(age_catagry3)
+tab age_catagry3,m
+drop age_catagry2
+drop age_catagry
+tab age_catagry3,m
+
+tab Division,m
+replace Division="Dhaka" if Division=="Tangail"
+replace Division="Dhaka" if Division=="DHAKA"
+tab Division,m
+keep if Division=="Chattogram"
+mean Hospitalstay
+clear
+use "C:\Users\ranamd\OneDrive - World Health Organization\Desktop\WHO\Dengue\Paper_Dengue\Data for Analysis\Final\Death 2023 - Copy.dta"
+keep if Division=="Khulna"
+mean Hospitalstay
+clear
+use "C:\Users\ranamd\OneDrive - World Health Organization\Desktop\WHO\Dengue\Paper_Dengue\Data for Analysis\Final\Death 2023 - Copy.dta"
+keep if Division=="Mymensingh"
+mean Hospitalstay
+clear
+use "C:\Users\ranamd\OneDrive - World Health Organization\Desktop\WHO\Dengue\Paper_Dengue\Data for Analysis\Final\Death 2023 - Copy.dta"
+keep if Division=="Rajshahi"
+mean Hospitalstay
+clear
+use "C:\Users\ranamd\OneDrive - World Health Organization\Desktop\WHO\Dengue\Paper_Dengue\Data for Analysis\Final\Death 2023 - Copy.dta"
+keep if Division=="Rangpur"
+mean Hospitalstay
+clear
+use "C:\Users\ranamd\OneDrive - World Health Organization\Desktop\WHO\Dengue\Paper_Dengue\Data for Analysis\Final\Death 2023 - Copy.dta"
+keep if Division=="Sylhet"
+mean Hospitalstay
+
+oneway Hospitalstay CauseofDeath , tabulate
+
+
+ttest Hospitalstay_deah, by( Sex)
+oneway Hospitalstay_deah CauseofDeath , tabulate
+regress Hospitalstay_deah i.CauseofDeath
