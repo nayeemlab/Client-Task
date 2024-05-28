@@ -2,7 +2,7 @@ clear
 *directory
 cd "E:\ResearchProject\Client Task\Anik Bhai"
 
-use "Death 2023_26Mar", clear
+use "Death_26March", clear
 
 ttest Hospitalstay_deah, by( Sex )
 
@@ -13,6 +13,11 @@ anova Hospitalstay_deah age_catagry3
 sort CauseofDeath
 by CauseofDeath: ci means Hospitalstay_deah, total
 anova Hospitalstay_deah CauseofDeath
+
+sort Divisionwithcity
+by Divisionwithcity: ci means Hospitalstay, total
+encode Divisionwithcity, gen(Divisionwithc)
+anova Hospitalstay Divisionwithc
 
 
 
